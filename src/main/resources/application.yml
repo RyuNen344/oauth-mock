@@ -1,0 +1,42 @@
+spring:
+  mvc:
+    favicon:
+      enabled: false
+
+  security:
+    user:
+      password: password
+
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: "uri"
+          client-id: "id"
+          client-secret: "secrete"
+
+    jwt:
+      token:
+        secret-key: secret-key
+        expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+
+logging:
+  level:
+    root: DEBUG
+
+    org:
+      springframework:
+        web:
+          servlet:
+            mvc:
+              method:
+                annotation:
+                  RequestMappingHandlerMapping: TRACE
+
+
+
+        security:
+          oauth2:
+            server:
+              resource: TRACE
+
+
