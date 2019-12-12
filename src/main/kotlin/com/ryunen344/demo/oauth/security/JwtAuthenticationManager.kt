@@ -1,5 +1,7 @@
 package com.ryunen344.demo.oauth.security
 
+import org.slf4j.Logger
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.Authentication
@@ -13,6 +15,9 @@ import org.springframework.security.oauth2.server.resource.BearerTokenErrorCodes
 import org.springframework.security.oauth2.server.resource.authentication.JwtBearerTokenAuthenticationConverter
 
 class JwtAuthenticationManager(private val jwtDecoder : JwtDecoder) : AuthenticationManager {
+
+    @Autowired
+    private lateinit var log : Logger
 
     companion object {
         private fun invalidToken(message : String?) : OAuth2Error? {
@@ -29,12 +34,13 @@ class JwtAuthenticationManager(private val jwtDecoder : JwtDecoder) : Authentica
     }
 
     override fun authenticate(authentication : Authentication?) : Authentication {
-        println("authenticate")
+        log.debug("authenticate")
         if (authentication == null || (authentication is BearerTokenAuthenticationToken).not()) throw JwtAuthenticationException("not authenticated")
 
         val token = (authentication as BearerTokenAuthenticationToken).token
 
         return try {
+            log.debug("return authentication")
             JwtBearerTokenAuthenticationConverter().convert(jwtDecoder.decode(token)) as Authentication
         } catch (e : JwtException) {
             throw onError(e)
@@ -42,7 +48,7 @@ class JwtAuthenticationManager(private val jwtDecoder : JwtDecoder) : Authentica
     }
 
     private fun onError(e : JwtException) : OAuth2AuthenticationException {
-        val invalidRequest = JwtAuthenticationManager.invalidToken(e.message)
+        val invalidRequest = invalidToken(e.message)
         return OAuth2AuthenticationException(invalidRequest, invalidRequest?.description, e)
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- definition of appender STDOUT -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy/MM/dd HH:mm:ss} %white([%thread]) %highlight(%-5level) %cyan(%logger#%M:%line) -
+                %green(%msg) %n
+            </pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="org.springframework.http" level="DEBUG"/>
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="org.springframework.webservlet.mvc.method.annotation.RequestMappingHandlerMapping" level="TRACE"/>
+    <logger name="org.springframework.security" level="DEBUG"/>
+    <logger name="org.springframework.jdbc" level="DEBUG"/>
+    <logger name="org.springframework.data" level="DEBUG"/>
+    <logger name="org.hibernate" level="DEBUG"/>
+    <logger name="com.zaxxer.hikari.Hikari" level="DEBUG"/>
+    <logger name="com.ryunen344.demo.oauth" level="DEBUG"/>
+    <root level="DEBUG">
+        <!-- appender referenced after it is defined -->
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
