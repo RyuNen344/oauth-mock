@@ -9,6 +9,7 @@ import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import org.slf4j.Logger
+import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -47,6 +48,6 @@ class AuthorizationController(private val log : Logger, private val keyPair : Ke
         val signedJWT = SignedJWT(header, payload)
         signedJWT.sign(signer)
 
-        res.setHeader("Authorization", " Bearer " + signedJWT.serialize())
+        res.setHeader(HttpHeaders.WWW_AUTHENTICATE, "Bearer " + signedJWT.serialize())
     }
 }

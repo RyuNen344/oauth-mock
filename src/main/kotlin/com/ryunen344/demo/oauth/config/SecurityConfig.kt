@@ -41,9 +41,10 @@ class SecurityConfig(private val log : Logger, private val keyPair : KeyPair) : 
                 .antMatchers("/auth/token/refresh").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling()
+                .oauth2ResourceServer()
                 .authenticationEntryPoint(JwtAuthenticationEntryPoint())
                 .accessDeniedHandler(BearerTokenAccessDeniedHandler())
+                .jwt()
     }
 
     override fun configure(auth : AuthenticationManagerBuilder) {
